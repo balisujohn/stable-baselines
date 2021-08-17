@@ -37,3 +37,5 @@ def test_update_n_batch_on_load():
     
     model.set_env(test_env)
     model.learn(total_timesteps = 100)
+    if os.path.exists('./ppo2_cartpole.zip'):
+        os.remove('./ppo2_cartpole.zip')
