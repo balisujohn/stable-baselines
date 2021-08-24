@@ -24,7 +24,7 @@ def test_clipping(cliprange, cliprange_vf):
     if os.path.exists('./ppo2_clip.zip'):
         os.remove('./ppo2_clip.zip')
 
-def test_update_n_batch_on_load(tmp_path):
+def test_ppo2_update_n_batch_on_load(tmp_path):
     env = make_vec_env('CartPole-v1',n_envs=2)
     model = PPO2('MlpPolicy', env, n_steps = 10, nminibatches=1)
     
