@@ -1,5 +1,4 @@
 import os
-import pathlib
 
 import pytest
 import gym 
@@ -29,13 +28,13 @@ def test_ppo2_update_n_batch_on_load(tmp_path):
     model = PPO2('MlpPolicy', env, n_steps = 10, nminibatches=1)
     
     model.learn(total_timesteps = 100)
-    model.save(tmp_path / "ppo2_cartpole.zip")
+    model.save(os.path.join(tmp_path , "ppo2_cartpole.zip"))
     
     del model
     
-    model = PPO2.load(tmp_path / "ppo2_cartpole.zip")
+    model = PPO2.load(os.path.join(tmp_path , "ppo2_cartpole.zip"))
     test_env = DummyVecEnv([lambda: gym.make('CartPole-v1')])
     
     model.set_env(test_env)
     model.learn(total_timesteps = 100)
-    os.remove(tmp_path / "ppo2_cartpole.zip")
+    os.remove(os.path.join(tmp_path , "ppo2_cartpole.zip"))
