@@ -1,4 +1,5 @@
 import os
+import pathlib
 
 import pytest
 import gym 
@@ -23,19 +24,18 @@ def test_clipping(cliprange, cliprange_vf):
     if os.path.exists('./ppo2_clip.zip'):
         os.remove('./ppo2_clip.zip')
 
-def test_update_n_batch_on_load():
+def test_update_n_batch_on_load(tmp_path):
     env = make_vec_env('CartPole-v1',n_envs=2)
     model = PPO2('MlpPolicy', env, n_steps = 10, nminibatches=1)
     
     model.learn(total_timesteps = 100)
-    model.save("ppo2_cartpole")
+    model.save(tmp_path / "ppo2_cartpole.zip")
     
     del model
     
-    model = PPO2.load("ppo2_cartpole")
+    model = PPO2.load(tmp_path / "ppo2_cartpole.zip")
     test_env = DummyVecEnv([lambda: gym.make('CartPole-v1')])
     
     model.set_env(test_env)
     model.learn(total_timesteps = 100)
-    if os.path.exists('./ppo2_cartpole.zip'):
-        os.remove('./ppo2_cartpole.zip')
+    os.remove(tmp_path / "ppo2_cartpole.zip")
